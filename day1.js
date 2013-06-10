@@ -1,7 +1,15 @@
  function calculate(text) {
-    var pattern = /\d+|\+|\-|\*|\/|\(|\)/g; //using regular expressions or regexp
+     // take input from the user and return the result
+    var pattern = /\d+|\+|\-|\*|\/|\(|\)/g;
     var tokens = text.match(pattern); //this will tokenize (into an array) the text by the pattern we just created
-    return JSON.stringify(tokens); //JSON takes things from javascript and makes it into text for the server
+    try {
+        var result = evaluate(tokens);
+        if (tokens.length !== 0) throw "ill-formed expression";
+        return String(result);
+    }
+    catch(err) {
+        return err;
+    }
 }
             
 function setup_calc(div) {
@@ -16,6 +24,7 @@ function setup_calc(div) {
 }
 
 function read_operand(array) {
+    // Interprets the first token of the array as a number.
     try {
         var num = parseInt(array[0]);
         array.shift();
@@ -23,7 +32,30 @@ function read_operand(array) {
         return num;
     }
     catch (err) {
-        
+        return err;
+    }
+}
+
+function evaluate(array) {
+    // attempts to solve entered problem
+    try {
+        if (array.length === 0) throw "missing operand";
+        var value = read_operand(array);
+        while (array.length !== 0) {
+            var operator = array[0];
+            array.shift();
+            if (array.length === 0) throw "missing operand";
+            var temp = read_operand(array);
+            if (operator == "+") value += temp;
+            else if (operator == "-") value -= temp;
+            else if (operator == "*") value *= temp;
+            else if (operator == "/") value /= temp;
+            else throw "unrecognized operator";
+        }
+        return value;
+    }
+    catch (err) {
+        return err;
     }
 }
             
