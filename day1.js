@@ -1,5 +1,5 @@
  function calculate(text) {
-     // take input from the user and return the result
+     // takes input from the user and returns the result
     var pattern = /\d+|\+|\-|\*|\/|\(|\)/g;
     var tokens = text.match(pattern); //this will tokenize (into an array) the text by the pattern we just created
     try {
@@ -13,13 +13,13 @@
 }
             
 function setup_calc(div) {
+    // Sets up the input bar and button for the user.
     var input = $('<input></input>', {type: "text", size: 50}); //giving attributes with "associative array"
     var output = $('<div></div>');
     var button = $('<button>Calculate</button>');
     button.bind("click", function() {
         output.text(String(calculate(input.val()))); //we're converting it to a string
     });
-    
     $(div).append(input,button,output);
 }
 
