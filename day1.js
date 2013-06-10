@@ -4,11 +4,11 @@
     var tokens = text.match(pattern); //this will tokenize (into an array) the text by the pattern we just created
     try {
         var result = evaluate(tokens);
-        if (tokens.length !== 0) throw "ill-formed expression";
+        if (tokens.length !== 0) throw new Error("ill-formed expression");
         return String(result);
     }
     catch(err) {
-        return err;
+        return err.message;
     }
 }
             
@@ -26,36 +26,36 @@ function setup_calc(div) {
 function read_operand(array) {
     // Interprets the first token of the array as a number.
     try {
-        var num = parseInt(array[0]);
+        var num = parseInt(array[0], 10);
         array.shift();
-        if (isNaN(num)) throw "number expected";
+        if (isNaN(num)) throw new Error ("number expected");
         return num;
     }
     catch (err) {
-        return err;
+        return err.message;
     }
 }
 
 function evaluate(array) {
     // attempts to solve entered problem
     try {
-        if (array.length === 0) throw "missing operand";
+        if (array.length === 0) throw new Error("missing operand");
         var value = read_operand(array);
         while (array.length !== 0) {
             var operator = array[0];
             array.shift();
-            if (array.length === 0) throw "missing operand";
+            if (array.length === 0) throw new Error ("missing operand");
             var temp = read_operand(array);
             if (operator == "+") value += temp;
             else if (operator == "-") value -= temp;
             else if (operator == "*") value *= temp;
             else if (operator == "/") value /= temp;
-            else throw "unrecognized operator";
+            else throw new Error ("unrecognized operator");
         }
         return value;
     }
     catch (err) {
-        return err;
+        return err.message;
     }
 }
             
