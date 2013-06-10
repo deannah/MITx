@@ -24,11 +24,22 @@ function setup_calc(div) {
 }
 
 function read_operand(array) {
-    // Interprets the first token of the array as a number.
+    // Interprets the first token of the array as a number or parentheses
+    // Also deals with negative numbers
     try {
-        var num = parseInt(array[0], 10);
-        array.shift();
-        if (isNaN(num)) throw new Error ("number expected");
+        var num = 1;
+        if (array[0] == "(") {
+            array.shift();
+            num = evaluate(array);
+            if (array[0] == ")") array.shift();
+            else throw new Error("Missing Parenthesis");
+        }
+        else {
+            if (array[0] == "-") num = -1;
+            num *= parseInt(array[0], 10);
+            if (isNaN(num)) throw new Error ("number expected");
+            array.shift();
+        }
         return num;
     }
     catch (err) {
@@ -51,6 +62,7 @@ function evaluate(array) {
             else if (operator == "*") value *= temp;
             else if (operator == "/") value /= temp;
             else throw new Error ("unrecognized operator");
+            if (array[0] == ")") return value;
         }
         return value;
     }
