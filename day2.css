@@ -16,12 +16,38 @@ h1 {
     font-size: 24pt;
     width: 200px;
     height: 80px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: rgb(112, 241, 177);
 }
 
 .calculator input[type="text"] { /* this affects the text inside of the input boxes */
     font-size: 24pt;
+    padding: 4px;
+    height: 76px;
+    width: 400px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: rgb(206, 240, 223);
+    border-color: darkgray;
 }
 
-/*#calc1 button { */
-/*    font-size: 10pt;*/
-/*}*/
+.calculator input[type="text"]:hover {
+    border-color: black;
+}
+
+.calculator input[type="text"]:focus {
+    background-color: rgb(201, 214, 214);
+}
+
+.calculator .output {
+    background-color: rgb(184, 235, 210);
+    padding: 20px;
+    width: 580px;
+    height: 30px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkgray;
+    border-radius: 10px;
+    margin: 10;
+}

@@ -15,7 +15,7 @@
 function setup_calc(div) {
     // Sets up the input bar and button for the user.
     var input = $('<input></input>', {type: "text", size: 50}); //giving attributes with "associative array"
-    var output = $('<div></div>');
+    var output = $('<div class="output"></div>');
     var button = $('<button>Calculate</button>');
     button.bind("click", function() {
         output.text(String(calculate(input.val()))); //we're converting it to a string
