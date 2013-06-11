@@ -1,0 +1,27 @@
+/* Stylesheet for calculator */
+
+h1 {
+    font-size: 32pt;
+    font-weight: normal;
+    text-align: center;
+    font-family: "Georgia";
+    font-style: italic;
+}
+
+.calculator { /* this only affects the results */
+    font-size: 24pt;
+}
+
+.calculator button { /* this affects the text of the buttons */
+    font-size: 24pt;
+    width: 200px;
+    height: 80px;
+}
+
+.calculator input[type="text"] { /* this affects the text inside of the input boxes */
+    font-size: 24pt;
+}
+
+/*#calc1 button { */
+/*    font-size: 10pt;*/
+/*}*/
