@@ -37,8 +37,7 @@ $(document).ready(function(){
        var expression = $('#expression');
        var current= $('#current');
        var input = $(this).text(); //this being the button that was pressed
-       if(last_click==='number'){
-           var actual_input=input;
+       var actual_input=input;
            switch(input.charCodeAt(0)){
                     case 247:
                         actual_input='/';
@@ -51,10 +50,16 @@ $(document).ready(function(){
                         break;
                }
     
+       if(last_click==='number'){
+           
            expression.append(current.text()+input);
            actual_expression=actual_expression.concat(current.text+actual_input);
        }else if(last_click==='operation'){
-           expression.text(expression.text().substring());
+           var current_exp=expression.text();
+           var current_actual_exp=actual_expression;
+           expression.text(current.substring(0,current.length-2) + input);
+           actual_expression=actual_expression.substring(0, actual_expression.length-2)+actual_input;
+       
        }
        last_click='operation';
        
