@@ -39,8 +39,9 @@ function graph(canvas, func, min, max){
         var tree= calculator.parse(func);
         var output=[];
         for(var i=0;i<width;i++){
-            var value=calculator.evaluate(tree,{x:min+i/(width-1)*(max-1.0*min),e:Math.e,pi:Math.PI});//1.0* to make it floating
+            var value=calculator.evaluate(tree,{x:min+1.0*i/(width-1)*(max-min),e:Math.e,pi:Math.PI});//1.0* to make it floating
             output.push(value);
+            console.log(min+1.0*i/(width-1)*(max-min));
         }
 
         var maxx=Math.max.apply(Math, output);//max amp
