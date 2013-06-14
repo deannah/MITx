@@ -4,13 +4,45 @@ var calculatorModule = (function () {
 
     // todos: are the class=# necessary on the row divs created in setup_calculator()?
 
+    function setup_grapher() {
+        var div = $(".calculator");
+        var graphDiv = $("<div class='grapher background'></div>");
+        
+        var canvasDiv = $("<div class='canvas'></div>");
+        var canvas = $("<canvas class='screen'></canvas>");
+        canvasDiv.append(canvas);
+        
+        var functionDiv = $("<div class='function'></div>");
+        var functionText = $("<text>f(x):</text>");
+        var functionInput = $("<input type:'text' class:'functionInput'></input>");
+        var plotButton = $("<button class:'plotButton tallButton'>Plot</button>");
+        functionDiv.append(functionText, functionInput, plotButton);
+        
+        var xDiv = $("<div class='x'></div>");
+        var minxText = $("<text>min x:</text>");
+        var minxInput = $("<input type:'text' class:'minx'></input>");
+        var maxxText = $("<text>max x:</text>");
+        var maxxInput = $("<input type:'text' class:'maxx'></input>");
+        xDiv.append(minxText, minxInput, maxxText, maxxInput);
+        
+        
+        graphDiv.append(canvasDiv, functionDiv, xDiv);
+        div.append(graphDiv);
+    }
 
-    function setup_calculator(div) {
+    function setup_calculator(div) { //for the simple, apple calculator
+        
+        var simpleCalc = $("<div class='simple background'></div>");
+        
         var screenDiv = $("<div class='screen'></div>");
         var expressionDiv = $("<div class='expression'></div>");
         screenDiv.append(expressionDiv);
         
         // Do I want a row0 here, with the M buttons? Probably not. But perhaps something else.
+        
+        var row0 = $("<div class='row' class='1'></div>");
+        var graphButton = $("<button class='graphButton'>Graphing Calculator</button>");
+        row0.append(graphButton);
         
         var row1 = $("<div class='row' class='1'></div>");
         var clearButton =$("<button class='clearButton'>C</button>");
@@ -45,8 +77,31 @@ var calculatorModule = (function () {
         var periodButton = $("<button class='numberButton'>.</button>");
         row5.append(zeroButton, periodButton);
         
-        $(div).append(screenDiv, row1, row2, row3, row4, row5);
-    };
+        $(simpleCalc).append(screenDiv, row0, row1, row2, row3, row4, row5);
+        $(div).append(simpleCalc);
+        
+        graphButton.on("click", function() {
+            setup_grapher();
+        });
+        
+        $('.numberButton').on("click", function() {
+            var input = $(this).text();
+            var expression= $(".expression");
+            expression.text(input);
+        });
+        
+        // var buttons = [clearButton, negateButton, divideButton, timesButton, sevenButton, eightButton, nineButton, minusButton, fourButton, fiveButton, sixButton, plusButton, oneButton, twoButton, threeButton, equalsButton, zeroButton, periodButton];
+        
+        // function pushButton(but) {
+            
+        // }
+        
+        // for(var i=0; i<buttons.length; i++) {
+        //     var thisbutton = buttons[i];
+        //     thisbutton.on("click", pushButton(thisbutton));
+        //     }
+        }
+    
 
     $(document).ready(function () {
         $(".calculator").each(function() {
