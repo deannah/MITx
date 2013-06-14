@@ -1,3 +1,5 @@
+// Day 3
+
 function setup_calc(div){
     
 	var canvas1 = $('<canvas></canvas>', {id: "screen"});

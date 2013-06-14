@@ -1,3 +1,5 @@
+// Taken from Day 1 for Day 2
+
 function calculate(text){
     var pattern = /\d*\.?\d+|\+|\-|\*|\/|\(|\)|\w*\(/g;
     var tokens = text.match(pattern);
