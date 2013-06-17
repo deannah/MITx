@@ -11,7 +11,11 @@ var quiz = function() {
         
         {"questionText": "Jill thinks y=2x-5 is going to ___ as x goes from 1 to 10.",
         "options": ["increases", "decreases", "goes up then down", "goes down then up"],
-        "solutionIndex": 0 }
+        "solutionIndex": 0 },
+        
+        {"questionText": "What color is the sky?",
+        "options": ["red", "green", "blue", "yellow", "clear"],
+        "solutionIndex": 2 }
     ]; 
     // structure with questionText, solution, options
     // questions = ["text of question", solution, options], ...., ....
@@ -50,15 +54,15 @@ var quiz = function() {
             quizDiv.append(optDiv);
         }
         
-        var nextDiv= $("<div class='next'></div>");
-        var nextButton = $("<button class='nextButton'>Next</button>");
-        nextDiv.append(nextButton);
+        var checkDiv= $("<div class='check'></div>");
+        var checkButton = $("<button class='checkButton'>Check</button>");
+        checkDiv.append(checkButton);
         
-        quizDiv.append(nextDiv);
+        quizDiv.append(checkDiv);
         
         var responseDiv = $("<div class='response'></div>");
         var scoreDiv = $("<div class='score'></div>");
-        nextButton.on("click", function() {
+        checkButton.on("click", function() {
             // need to do: checkAnswer, something something, depends on how he wants to format it
             $(".response").html("");
             if (checkAnswer() === true) {
@@ -70,7 +74,30 @@ var quiz = function() {
             }
             scoreDiv.html("");
             scoreDiv.append("Current score: " + score);
+            
             quizDiv.append(responseDiv, scoreDiv);
+            $(".check").html(""); // clears check button
+            
+            if (currentQuestionIndex < questions.length-1) {
+                var nextDiv = $("<div class='next'></div>");
+                var nextButton = $("<button class='nextButton'>Next</button>");
+                nextDiv.append(nextButton);
+                quizDiv.append(nextDiv);
+                currentQuestionIndex++;
+                nextButton.on("click", function() {
+                    $(".quiz").html("");
+                    displayQuestion();
+                });
+            }
+            else {
+                var congratsDiv = $("<div class='congrats'></div>");
+                congratsDiv.append("Congratulations, you finished the quiz!")
+                
+                scoreDiv.html("");
+                scoreDiv.append("Final score: " + score);
+                
+                quizDiv.append(congratsDiv, scoreDiv);
+            };
         });
         
         console.log("Question has been displayed");
@@ -92,16 +119,16 @@ var quiz = function() {
 $(document).ready(function() {
     quiz.setup();
     
-    var req = $.ajax({
-        //async: false;
-        url: "http://localhost:8080/", //dunno if https is allowed here.
-        data: {id : 10,
-        }
-    });
+    // var req = $.ajax({
+    //     async: false, //this is necessary to make this print before what prints, but you normally don't want this
+    //     url: "http://localhost:8080/", //dunno if https is allowed here.
+    //     data: {id : 10,
+    //     }
+    // });
     
-    req.done(function(msg) {
-        console.log(msg);
-    });
-
+    // req.done(function(msg) {
+    //     console.log(msg);
+    // });
+    // console.log("what");
 });
 

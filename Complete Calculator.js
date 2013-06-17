@@ -80,8 +80,8 @@ function evaluate(array) {
     //         grapher.animate({"left" : "8px"}, 100);
     //     }
     // };
-
-    var graph = function(canvas, func, min, max) {
+    
+    var graph = function(canvas, func, min, max) { //to figure this out step by step
         var DOMcanvas = canvas[0];
         var width=canvas.width();
         var height=canvas.height();
@@ -89,65 +89,78 @@ function evaluate(array) {
         DOMcanvas.height = height;
         var ctx = DOMcanvas.getContext('2d');
         
-        try{
-        var tree= calculator.parse(func);
-        var output=[];
-        for(var i=0;i<width;i++){
-            var value=calculator.evaluate(tree,{x:min+1.0*i/(width-1)*(max-min),e:Math.e,pi:Math.PI});//1.0* to make it floating
-            output.push(value);
-        }
-        var maxx=Math.max.apply(Math, output);//max amp
-        var minn=Math.min.apply(Math,output);//min amp
-            
-        var gcanvas = $("<canvas></canvas>")[0]; //DOM object
-        gcanvas.width = width;
-        gcanvas.height = height-10;
-        var gheight=height-10;
-        var gctx = gcanvas.getContext('2d');
-        gctx.beginPath();
-        gctx.moveTo(0,gheight-(output[0]-minn)/(maxx-minn)*gheight);
-        for(var j=1;j<width;j++){
-            gctx.lineTo(j,gheight-(output[j]-minn)/(maxx-minn)*gheight);
-        }
-        gctx.stroke();
-        
-        ctx.drawImage(gcanvas,0,5);// to leave upper and lower border by 5 pixcels
-        canvas.on("mousemove",function(event){
-            var mx = event.pageX;
-            var my = event.pageY;
-            var offset = canvas.offset();//{left: ..., top: ...}
-            mx = Math.round(mx-offset.left);
-            my=Math.round(my-offset.top);
-            
-            ctx.clearRect(0,0,width,height);
-            ctx.drawImage(gcanvas,0,5);// to leave upper and lower border by 5 pixcels
-            
-            ctx.beginPath(); //drawing a crosshair over cursor location
-            ctx.moveTo(mx-10, my);
-            ctx.lineTo(mx+10, my);
-            ctx.moveTo(mx, my-10);
-            ctx.lineTo(mx, my+10);
-            ctx.strokeStyle="black";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            
-        });
-        } catch(err){
-            // error on canvas
-            ctx.beginPath();
-            ctx.fillStyle = "black";
-            ctx.font = "14px Arial";
-            ctx.textAlign = "center"; //left, right
-            ctx.textBaseline = "middle"; //top, bottom, alphabetic
-            ctx.fillText(err, width/2, height/2);//string, x, y
-        }
+        ctx.beginPath();
+        ctx.fillStyle = "red";
+        ctx.fillRect(25,25,100,100);
     };
+
+    // var graph = function(canvas, func, min, max) {
+    //     var DOMcanvas = canvas[0];
+    //     var width=canvas.width();
+    //     var height=canvas.height();
+    //     DOMcanvas.width = width;
+    //     DOMcanvas.height = height;
+    //     var ctx = DOMcanvas.getContext('2d');
+        
+    //     try{
+    //     var tree= calculator.parse(func);
+    //     var output=[];
+    //     for(var i=0;i<width;i++){
+    //         var value=calculator.evaluate(tree,{x:min+1.0*i/(width-1)*(max-min),e:Math.e,pi:Math.PI});//1.0* to make it floating
+    //         output.push(value);
+    //     }
+    //     var maxx=Math.max.apply(Math, output);//max amp
+    //     var minn=Math.min.apply(Math,output);//min amp
+            
+    //     var gcanvas = $("<canvas></canvas>")[0]; //DOM object
+    //     gcanvas.width = width;
+    //     gcanvas.height = height-10;
+    //     var gheight=height-10;
+    //     var gctx = gcanvas.getContext('2d');
+    //     gctx.beginPath();
+    //     gctx.moveTo(0,gheight-(output[0]-minn)/(maxx-minn)*gheight);
+    //     for(var j=1;j<width;j++){
+    //         gctx.lineTo(j,gheight-(output[j]-minn)/(maxx-minn)*gheight);
+    //     }
+    //     gctx.stroke();
+        
+    //     ctx.drawImage(gcanvas,0,5);// to leave upper and lower border by 5 pixcels
+    //     canvas.on("mousemove",function(event){
+    //         var mx = event.pageX;
+    //         var my = event.pageY;
+    //         var offset = canvas.offset();//{left: ..., top: ...}
+    //         mx = Math.round(mx-offset.left);
+    //         my=Math.round(my-offset.top);
+            
+    //         ctx.clearRect(0,0,width,height);
+    //         ctx.drawImage(gcanvas,0,5);// to leave upper and lower border by 5 pixcels
+            
+    //         ctx.beginPath(); //drawing a crosshair over cursor location
+    //         ctx.moveTo(mx-10, my);
+    //         ctx.lineTo(mx+10, my);
+    //         ctx.moveTo(mx, my-10);
+    //         ctx.lineTo(mx, my+10);
+    //         ctx.strokeStyle="black";
+    //         ctx.lineWidth = 1;
+    //         ctx.stroke();
+            
+    //     });
+    //     } catch(err){
+    //         // error on canvas
+    //         ctx.beginPath();
+    //         ctx.fillStyle = "black";
+    //         ctx.font = "14px Arial";
+    //         ctx.textAlign = "center"; //left, right
+    //         ctx.textBaseline = "middle"; //top, bottom, alphabetic
+    //         ctx.fillText(err, width/2, height/2);//string, x, y
+    //     }
+    // };
 
     function setup_grapher() {
         var div = $(".calculator");
         var graphDiv = $("<div class='grapher background'></div>");
         
-        var canvasDiv = $("<div class='canvas'></div>");
+        var canvasDiv = $("<div class='canvasDiv'></div>");
         var canvas = $("<canvas class='screen'></canvas>");
         canvasDiv.append(canvas);
         
@@ -169,7 +182,19 @@ function evaluate(array) {
         div.append(graphDiv);
         
         $('.plotButton').on("click", function () {
-            graph(canvas1, input1.val(), input2.val(), input3.val());
+            //graph(canvas, functionInput.val(), minxInput.val(), maxxInput.val());
+            var DOMcanvas = canvas[0];
+            // var width=canvas.width();
+            // var height=canvas.height();
+            // DOMcanvas.width = width;
+            // DOMcanvas.height = height;
+            var ctx = DOMcanvas.getContext('2d');
+        
+            ctx.beginPath();
+            ctx.fillStyle = "red";
+            ctx.fillRect(25,25,100,100);
+            ctx.stroke();
+            console.log("Plot button pressed");
         });
     }
 
