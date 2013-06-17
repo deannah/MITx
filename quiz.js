@@ -2,6 +2,7 @@
 
 var quiz = function() {
     
+    
     var exports = {};
     
     var questions = [
@@ -20,11 +21,11 @@ var quiz = function() {
     // structure with questionText, solution, options
     // questions = ["text of question", solution, options], ...., ....
     
-    var answers = []; // answers from the student
     
-    var score = 0; //score of the student
     
-    var currentQuestionIndex= 0; // index of the question the student is on
+    var flag = localStorage.flag; // if true, use local storage to store student data
+    var score, currentQuestionIndex; //Student, student;
+    
     
     function checkAnswer() {
         // takes a question index and student's input. will return true if answer correct.
@@ -84,6 +85,7 @@ var quiz = function() {
                 nextDiv.append(nextButton);
                 quizDiv.append(nextDiv);
                 currentQuestionIndex++;
+                if (flag===true) { localStorage.currentQuestionIndex = currentQuestionIndex; }
                 nextButton.on("click", function() {
                     $(".quiz").html("");
                     displayQuestion();
@@ -106,17 +108,79 @@ var quiz = function() {
     function incrementScore() {
         // called when a student gets a question right.
         score++;
+        if (flag===true) { localStorage.score=score; }
     };
     
     function setup() {
+        if (flag === undefined) {
+            var r=confirm("Would you like to use local storage? If you press cancel, your data will be stored on our server instead.");
+            if (r=== true) {
+                flag=true;
+                localStorage.flag=true;
+            }
+            else {
+                flag=false;
+                localStorage.flag=false;
+                var Student = Parse.Object.extend("Student");
+                var student = new Student();
+                student.set("score", 0);
+                student.set("currentQuestionIndex", 0);
+                console.log("About to save");
+                student.save(null, {
+                    success: function(student) {
+                        alert("Your file has been created on our server!");
+                    },
+                    failure: function(student, error) {
+                        alert("Our server is malfunctioning! Error Code: " + error.description);
+                    }
+                });
+                console.log("just tried to save");
+                // student.save({
+                //     score:0,
+                //     currentQuestionIndex: 0
+                // }, {
+                //     success: function(student) {
+                //         alert("Your file has been created on our server!");
+                //     },
+                //     failure: function(student, error) {
+                //         alert("Our server is malfunctioning! Error Code: " + error.description);
+                //     }
+                // });
+            }
+        }
+        if (flag===true) {
+            if (localStorage.score === null) {
+                localStorage.score=0;
+            }
+            if (localStorage.currentQuestionIndex === null) {
+                localStorage.score=0;
+            }
+        
+            score = parseInt(localStorage.score, 10); //score of the student
+            currentQuestionIndex= parseInt(localStorage.currentQuestionIndex, 10); // index of the question the student is on
+        }
+        else {
+            score = student.get("score");
+            currentQuestionIndex = student.get("currentQuestionIndex");
+            if (score===undefined) {
+                score=0;
+            }
+            if (currentQuestionIndex===undefined) {
+                currentQuestionIndex=0;
+            }
+        }
+
         displayQuestion();
     };
     
     exports.setup = setup;
+    exports.flag = flag;
     return exports;
 }();
 
-$(document).ready(function() {
+$(document).ready(function() {    
+    Parse.initialize("FtwqHLQjjC5OA4zSMxpvdweC6CVurTOHI8icLWJP", "PkajPu3YCmPWwkVjJ1dtWBZaohGRrWOctoPvN6Rs");
+    
     quiz.setup();
     
     // var req = $.ajax({
@@ -131,4 +195,3 @@ $(document).ready(function() {
     // });
     // console.log("what");
 });
-
