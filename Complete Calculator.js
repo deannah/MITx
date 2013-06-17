@@ -13,15 +13,15 @@ var calculatorModule = (function () {
         canvasDiv.append(canvas);
         
         var functionDiv = $("<div class='function'></div>");
-        var functionText = $("<text>f(x):</text>");
+        var functionText = $("<text>f(x): </text>");
         var functionInput = $("<input type:'text' class:'functionInput'></input>");
         var plotButton = $("<button class:'plotButton tallButton'>Plot</button>");
         functionDiv.append(functionText, functionInput, plotButton);
         
         var xDiv = $("<div class='x'></div>");
-        var minxText = $("<text>min x:</text>");
+        var minxText = $("<text>min x: </text>");
         var minxInput = $("<input type:'text' class:'minx'></input>");
-        var maxxText = $("<text>max x:</text>");
+        var maxxText = $("<text>max x: </text>");
         var maxxInput = $("<input type:'text' class:'maxx'></input>");
         xDiv.append(minxText, minxInput, maxxText, maxxInput);
         

@@ -1,7 +1,7 @@
 /* Day 5, trying to make a calculator from previous work */
 /* This is currently primarily css work done by someone else. I would love to replace it with some of my own code. */
 
-.background  {
+div.simple.background  {
     background: linear-gradient(to bottom, #DFDFDF, #AEAEAE);
     height: 520px;
     width: 414px;
@@ -9,12 +9,12 @@
     border: 1px solid gray;
 }
 
-.grapher.background {
+div.grapher.background {
     height: 580px;
-    /*background: linear-gradient(to bottom, #DFDFDF, #AEAEAE);*/
-    /*width: 414px;*/
-    /*position: relative;*/
-    /*border: 1px solid gray;*/
+    background: linear-gradient(to bottom, #DFDFDF, #AEAEAE);
+    width: 414px;
+    position: relative;
+    border: 1px solid gray;
 }
 
 .screen {
@@ -34,10 +34,6 @@
         
 }
 
-.grapher .screen {
-    height: 400px;
-}
-
 .simple .screen div{
     position: relative;
     text-align: right;
@@ -47,11 +43,11 @@
     font-family: Betabet Sans-Regular,Lucida Sans EF Roman, Verdana;
 }
 
-.simple .row {
-    margin-left:17px;
+.grapher .screen {
+    height: 400px;
 }
 
-.grapher .function, .grapher .x div {
+.simple .row {
     margin-left:17px;
 }
 
@@ -80,6 +76,7 @@
     float: right;
     position: relative;
     margin-right: 17px;
+    top:-5;
 }
 
 .simple .tallButton{
@@ -96,23 +93,66 @@
 }
 
 .calculator button:hover{
-    background-color: #D6C5D5;
+    background-color: rgb(197, 209, 214);
     box-shadow:
         0 1.5px 2px #F9F9F9,
         inset 0.5px -4.5px 5px 0 #5E5E5E;
 }
 
 .calculator button:active{
-    background-color: #939393;
+    background-color: rgb(178, 189, 179);
     box-shadow:
         inset 0 5px 5px 0 #5E5E5E;
 }
 
-.grapher .functionInput {
-    width: 245px !important;
+.grapher input {
+    height: 40px;
+    border-radius: 5px;
+    background-color: rgb(176, 199, 204);
+    border-color: rgb(126, 164, 173);
+    box-shadow:
+        0 2px 3px 0 rgb(241, 241, 241),
+        0 -3px 3px 0 rgb(128, 128, 128),
+        -2px 0 4px 0 rgb(146, 143, 143),
+        2px 0 5px 0 rgb(146, 143, 143);
 }
 
+.grapher text {
+    font-size: 18pt;
+}
 
+.function input {
+    width: 230px;
+}
 
+div.function {
+    margin-top: 10px;
+}
+
+div.x {
+    margin-top: 27px;
+}
+
+.x input {
+    width: 65px;
+}
+
+.x text {
+    margin-left: 10px;
+}
+
+.function {
+    margin-left: 17px;
+}
+
+.x {
+    margin-left: 7px;
+}
+
+input:focus {
+    outline: none;
+    border-color: white;
+    background-color: rgb(208, 228, 233);
+}
 
 
