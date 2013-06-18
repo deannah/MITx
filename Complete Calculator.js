@@ -89,6 +89,12 @@ function evaluate(array) {
         DOMcanvas.height = height;
         var ctx = DOMcanvas.getContext('2d');
         
+        if (func === null) {func="x";}
+        
+        console.log("Function: " +func);
+        console.log("Min: " + min);
+        console.log("Max: " + max);
+        
         ctx.beginPath();
         ctx.fillStyle = "red";
         ctx.fillRect(25,25,100,100);
@@ -166,35 +172,25 @@ function evaluate(array) {
         
         var functionDiv = $("<div class='function'></div>");
         var functionText = $("<text>f(x): </text>");
-        var functionInput = $("<input type:'text' class:'functionInput'></input>");
-        var plotButton = $("<button class:'plotButton tallButton'>Plot</button>");
+        var functionInput = $("<input type='text' class:'functionInput'></input>");
+        var plotButton = $("<button class='plotButton tallButton'>Plot</button>");
         functionDiv.append(functionText, functionInput, plotButton);
         
         var xDiv = $("<div class='x'></div>");
         var minxText = $("<text>min x: </text>");
-        var minxInput = $("<input type:'text' class:'minx'></input>");
+        var minxInput = $("<input type='text' class:'minx'></input>");
         var maxxText = $("<text>max x: </text>");
-        var maxxInput = $("<input type:'text' class:'maxx'></input>");
+        var maxxInput = $("<input type='text' class:'maxx'></input>");
         xDiv.append(minxText, minxInput, maxxText, maxxInput);
         
         
         graphDiv.append(canvasDiv, functionDiv, xDiv);
         div.append(graphDiv);
         
-        $('.plotButton').on("click", function () {
+        $('.plotButton').bind("click", function () {
             //graph(canvas, functionInput.val(), minxInput.val(), maxxInput.val());
-            var DOMcanvas = canvas[0];
-            // var width=canvas.width();
-            // var height=canvas.height();
-            // DOMcanvas.width = width;
-            // DOMcanvas.height = height;
-            var ctx = DOMcanvas.getContext('2d');
-        
-            ctx.beginPath();
-            ctx.fillStyle = "red";
-            ctx.fillRect(25,25,100,100);
-            ctx.stroke();
-            console.log("Plot button pressed");
+            console.log("You clicked Plot. A+");
+            graph(canvas, functionInput.val(), minxInput.val(), maxxInput.val());
         });
     }
 
@@ -238,7 +234,7 @@ function evaluate(array) {
         var oneButton = $("<button class='numberButton'>1</button>");
         var twoButton = $("<button class='numberButton'>2</button>");
         var threeButton = $("<button class='numberButton'>3</button>");
-        var equalsButton = $("<button class='tallButton'>=</button>");
+        var equalsButton = $("<button class='tallButton equalsButton'>=</button>");
         row4.append(oneButton, twoButton, threeButton, equalsButton);
         
         var row5 = $("<div class='row' class='5'></div>");
@@ -250,6 +246,7 @@ function evaluate(array) {
         $(div).append(simpleCalc);
         
         graphButton.on("click", function() {
+            console.log("You clicked graphing button. Good work, soldier.");
             setup_grapher();
             //toggle();
         });
@@ -285,13 +282,15 @@ function evaluate(array) {
             $(".answer").text("");
         });
         
-        $('.tallButton').on("click", function() {
+        $('.equalsButton').on("click", function() {
+            console.log("Is this the problem?");
             var expression= $(".expression");
             var expText = expression.text();
             var answer = calculate(expText);
             var ansDiv = $(".answer");
             ansDiv.text(answer);
         });
+        
         
         // $('.negateButton').on("click", function () {
         //     var expression= $(".expression");
