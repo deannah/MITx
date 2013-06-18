@@ -24,7 +24,7 @@ var quiz = function() {
     
     
     var flag = localStorage.flag; // if true, use local storage to store student data
-    var score, currentQuestionIndex; //Student, student;
+    var score, currentQuestionIndex, Student, student;
     
     
     function checkAnswer() {
@@ -32,7 +32,7 @@ var quiz = function() {
         var correctAns = questions[currentQuestionIndex].solutionIndex;
         var input = $('input[name=option]:checked').val();
         return correctAns==input;
-    };
+    }
     
     function displayQuestion() {
         // display current quiz question to the student, by dynamically creating HTML.
@@ -86,6 +86,10 @@ var quiz = function() {
                 quizDiv.append(nextDiv);
                 currentQuestionIndex++;
                 if (flag===true) { localStorage.currentQuestionIndex = currentQuestionIndex; }
+                else {
+                    student.increment("currentQuestionIndex"); 
+                    student.save();
+                }
                 nextButton.on("click", function() {
                     $(".quiz").html("");
                     displayQuestion();
@@ -109,9 +113,15 @@ var quiz = function() {
         // called when a student gets a question right.
         score++;
         if (flag===true) { localStorage.score=score; }
+        else {
+            student.increment("score"); 
+            student.save();
+        }
     };
     
     function setup() {
+        Student = Parse.Object.extend("Student");
+        student = new Student();
         if (flag === undefined) {
             var r=confirm("Would you like to use local storage? If you press cancel, your data will be stored on our server instead.");
             if (r=== true) {
@@ -121,11 +131,11 @@ var quiz = function() {
             else {
                 flag=false;
                 localStorage.flag=false;
-                var Student = Parse.Object.extend("Student");
-                var student = new Student();
                 student.set("score", 0);
+                score = 0;
                 student.set("currentQuestionIndex", 0);
-                console.log("About to save");
+                student.save();
+                currentQuestionIndex = 0;
                 student.save(null, {
                     success: function(student) {
                         alert("Your file has been created on our server!");
@@ -134,18 +144,6 @@ var quiz = function() {
                         alert("Our server is malfunctioning! Error Code: " + error.description);
                     }
                 });
-                console.log("just tried to save");
-                // student.save({
-                //     score:0,
-                //     currentQuestionIndex: 0
-                // }, {
-                //     success: function(student) {
-                //         alert("Your file has been created on our server!");
-                //     },
-                //     failure: function(student, error) {
-                //         alert("Our server is malfunctioning! Error Code: " + error.description);
-                //     }
-                // });
             }
         }
         if (flag===true) {
@@ -160,15 +158,20 @@ var quiz = function() {
             currentQuestionIndex= parseInt(localStorage.currentQuestionIndex, 10); // index of the question the student is on
         }
         else {
-            score = student.get("score");
-            currentQuestionIndex = student.get("currentQuestionIndex");
-            if (score===undefined) {
-                score=0;
-            }
-            if (currentQuestionIndex===undefined) {
-                currentQuestionIndex=0;
-            }
+            currentQuestionIndex = parseInt(student.get("currentQuestionIndex"), 10);
+            score = parseInt(student.get("score"), 10);
+            
         }
+        // else {
+        //     score = student.get("score");
+        //     currentQuestionIndex = student.get("currentQuestionIndex");
+        //     if (score===undefined) {
+        //         score=0;
+        //     }
+        //     if (currentQuestionIndex===undefined) {
+        //         currentQuestionIndex=0;
+        //     }
+        //}
 
         displayQuestion();
     };
