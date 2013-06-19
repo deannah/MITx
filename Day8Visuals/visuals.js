@@ -15,3 +15,7 @@ var data= [0, 4, 8, 8, 15, 16, 23, 42];
 var chart = d3.select(".chart-container")
         .append("div")
         .attr("class", "chart");
+
+chart.selectAll("div").data(data).enter().append("div"); 
+//d3 will find all the divs and bind each to a piece of data.
+// enter() is like doing a $ with something that doesn't exist yet.
