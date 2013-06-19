@@ -1,15 +1,15 @@
 {
-    "name" : "Colors"
+    "name" : "Colors",
     "children": [
         {
-            "name": "Red"
+            "name": "Red",
             "children" : [
                 {"name": "Maroon"},
                 {"name": "Pink"}
             ]
         },
         {
-            "name": "Blue"
+            "name": "Blue",
             "children" : [
                 {"name": "Navy"},
                 {"name": "Turquoise"},
@@ -17,7 +17,7 @@
             ]
         },
         {
-            "name": "Purple"
+            "name": "Purple",
             "children" : [
                 {"name": "Lavendar"}
             ]
