@@ -1,0 +1,27 @@
+{
+    "name" : "Colors"
+    "children": [
+        {
+            "name": "Red"
+            "children" : [
+                {"name": "Maroon"},
+                {"name": "Pink"}
+            ]
+        },
+        {
+            "name": "Blue"
+            "children" : [
+                {"name": "Navy"},
+                {"name": "Turquoise"},
+                {"name": "Sky Blue"}
+            ]
+        },
+        {
+            "name": "Purple"
+            "children" : [
+                {"name": "Lavendar"}
+            ]
+        }
+        
+    ]
+}

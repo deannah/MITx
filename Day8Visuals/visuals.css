@@ -8,7 +8,7 @@
 
 .chart rect {
     fill: rgb(89, 213, 208);
-    stroke: white;
+    stroke: rgb(141, 245, 241);
 }
 
 .chart text {

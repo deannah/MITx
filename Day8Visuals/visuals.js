@@ -1,15 +1,4 @@
 // Day 8, visualizations practice with D3
-
-var data= data[1].map(function(d) {return d.y});
-
-// var chart = $("<div></div>").addClass("chart");
-
-// $(".chart-container").append(chart);
-
-//data.forEach(function(d) {chart.append(d);});
-// data.forEach(function(d) {
-//     chart.append($("<div></div>").css("width", d * 10 + "px").text(d));
-// });
    
 var outer_height = 300;
 var outer_width = 300;
@@ -19,12 +8,18 @@ var margin = {top: 20, right: 20, bottom: 20, left: 20};
 var chart_width = outer_width - margin.left - margin.right;
 var chart_height = outer_height - margin.top - margin.bottom;
 
+var stack = d3.layout.stack();
+var stacked_data = stack(data);
+
+var y_stack_max = d3.max(stacked_data, function(layer) {return d3.max(layer, function(d) {return d.y + d.y0;});});
+
+var y_group_max = d3.max(stacked_data, function(layer) {return d3.max(layer, function(d) {return d.y;});});
    
 var y_scale = d3.scale.linear()
-        .domain([0, d3.max(data)])
+        .domain([0, y_stack_max])
           .range([chart_height, 0]);
 
-var x_scale = d3.scale.ordinal().domain(d3.keys(data)).rangeBands([0, chart_height]);
+var x_scale = d3.scale.ordinal().domain(d3.range(data[0].length)).rangeBands([0, chart_height]);
 // keys(data) is essentially data.length, in array form
 
 var chart = d3.select(".chart-container")
@@ -53,15 +48,37 @@ chart.selectAll(".y-scale-label").data(y_scale.ticks(10))
           .attr("dy", "0.3em")
           .text(String);
 
-chart.selectAll("rect").data(data)
+var layer_groups = chart.selectAll(".layer").data(stacked_data)
+        .enter().append("g")
+          .attr("class", "layer");
+          
+var rects = layer_groups.selectAll("rect").data(function(d) {return d;})
         .enter().append("rect")
-          .attr("x", function(d, i) {return x_scale(i);})  //d is the data, i is the index of the one we're looking at now
-          .attr("y", y_scale)
-          // that i is necessary in case you need to repeat data(and you have two 8s)
+          .attr("x", function(d, i) {return x_scale(i);})
+          .attr("y", function(d) {return y_scale(d.y0 + d.y);})
           .attr("width", x_scale.rangeBand())
-          .attr("height", function(d) {return chart_height - y_scale(d);}); 
+          .attr("height", function(d) {return y_scale(d.y0) - y_scale(d.y0 + d.y )});
+          
+function goGrouped() {
+    y_scale.domain([0, y_group_max]);
+    rects.transition()
+        .duration(1000)
+        .delay(function(d, i) {return i *20;})
+        .attr("x", function(d, i, j) {
+            return x_scale(i) + x_scale.rangeBand()/stacked_data.length*j;})
+        .attr("width", x_scale.rangeBand()/stacked_data.length)
+      .transition()
+        .attr("y", function(d) {return y_scale(d.y);})
+        .attr("height", function(d) {return chart_height - y_scale(d.y);});
+}
 
-// rects don't have text, so we have to add our own text nodes:
+// chart.selectAll("rect").data(data)
+//         .enter().append("rect")
+//           .attr("x", function(d, i) {return x_scale(i);})  //d is the data, i is the index of the one we're looking at now
+//           .attr("y", y_scale)
+//           // that i is necessary in case you need to repeat data(and you have two 8s)
+//           .attr("width", x_scale.rangeBand())
+//           .attr("height", function(d) {return chart_height - y_scale(d);}); 
 
 // chart.selectAll(".bar-label").data(data)
 //         .enter().append("text")
@@ -74,12 +91,3 @@ chart.selectAll("rect").data(data)
 //           .attr("dy", "0.7em")
 //           .attr("text-anchor", "middle")
 //           .text(function(d) {return d;});
-
-
-// chart.selectAll("div").data(data)
-//         .enter().append("div")
-//           //.style("width", function(d) {return d * 10 + "px";})
-//           .style("width", x_scale)
-//             .text(function(d) {return d;}); 
-//d3 will find all the divs and bind each to a piece of data.
-// enter() is like doing a $ with something that doesn't exist yet.
