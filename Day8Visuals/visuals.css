@@ -2,16 +2,29 @@
 
 .chart {
     border: 1px solid gray;
+    background-color: rgb(245, 214, 247)
+    
 }
 
 .chart rect {
-    fill: rgb(100,50,150);
+    fill: rgb(89, 213, 208);
     stroke: white;
 }
 
 .chart text {
-    fill: white;
     font: 10px sans-serif;
+}
+
+.chart .bar-label {
+    fill: white;
+}
+
+.chart .y-scale-label {
+    fill: rgb(188, 47, 255);
+}
+
+.chart line {
+    stroke: rgb(90, 23, 128);
 }
 
 /*.chart div {*/
