@@ -3,20 +3,31 @@ var knapsack = (function() {
     exports = {};
     
     function Model() {
+        // want to create an array of the items.
+		var items = [];
+		
+		$("img").each(function(index, domEle) {
+			var array = [];
+			array["weight"] = $(domEle).data("weight");
+			array["value"] = $(domEle).data("value");
+			items[$(domEle).data("name")] = array;
+		})
+		console.log(items);
+		
+    }
+    
+    function View(div, model, controller) {
         
     }
     
-    function View() {
-        
-    }
-    
-    function Controller() {
+    function Controller(model) {
         
     }
     
     function setup(div) {
-        var test = $("<div class='test'></div");
-        div.append(test);
+        var model = Model();
+		var controller = Controller(model);
+		var view = View(div, model, controller)
     }
     
     exports.setup = setup;
