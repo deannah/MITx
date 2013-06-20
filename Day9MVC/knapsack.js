@@ -1,6 +1,6 @@
 var knapsack = (function() {
     
-    exports = {};
+    var exports = {};
     
 	var itemHTML = [
 			'<img src="clock.png" data-value="175" data-weight="10" data-name="clock">',
@@ -16,15 +16,35 @@ var knapsack = (function() {
 		
 		$("img").each(function(index, domEle) {
 			var array = [];
-			array["weight"] = $(domEle).data("weight");
-			array["value"] = $(domEle).data("value");
-			array["name"] = $(domEle).data("name");
-			array["html"] = $(domEle).html();
+			array.weight = $(domEle).data("weight");
+			array.value = $(domEle).data("value");
+			array.name = $(domEle).data("name");
+			array.html = $(domEle).html();
+			array.location = "house";
 			items[index] = array;
-		})
-		console.log(items);
-		console.log(items.length);
-		return {items: items}
+		});
+		
+		// I can't get trackprogress to work when calling it in view from the model.
+//		var totValue = 0, totWeight = 0;
+//		
+//		function TrackProgress() {
+//			totValue = 0;
+//			totWeight = 0;
+//			for (var i = 0; i<items.length; i++) {
+//				if(items[i].location == "sack") {
+//					totValue += items[i].value;
+//					totWeight += items[i].weight;
+//				}
+//			}
+//			console.log("updated value: " + totValue);
+//			console.log("updated weight: " + totWeight);
+//		}
+		
+		// need to keep track of weight and value in knapsack.
+		
+		return{items: items};
+		
+		//return {items: items, TrackProgress: TrackProgress, totValue : totValue, totWeight : totWeight};
 		
     }
     
@@ -46,7 +66,29 @@ var knapsack = (function() {
 		}
 		
 		div.append(houseDiv, sackDiv);
-
+		
+		var info = $("<div class='info'></div>");
+		div.append(info);
+		
+		var totValue = 0, totWeight = 0;
+		
+		function TrackProgress() {
+			totValue = 0;
+			totWeight = 0;
+			for (var i = 0; i<items.length; i++) {
+				if(items[i].location == "sack") {
+					totValue += items[i].value;
+					totWeight += items[i].weight;
+				}
+			}
+		}
+		
+		function updateInfo() {
+			info.text("Total value: $" + totValue + "  Total weight: " + totWeight + " kg");
+		}
+		
+		updateInfo();
+		
 		$(".item").click(function() {
 			var id; // items[id] will refer to the clicked item.
 			
@@ -54,20 +96,33 @@ var knapsack = (function() {
 				if ($(this).hasClass(i)) {id=i;}
 			}
 			n = items[id].name;
-			console.log("You clicked " + n + "!");
 			
 			var par = $(this).parent();
-			this.remove();
+			
+			$(".nope").remove(); //in case there had been a warning.
 			
 			if (par.hasClass("house")) {
-				sackDiv.append(itemSpans[id]);
+				if(totWeight+items[id].weight <= 20) {
+					this.remove();
+					sackDiv.append(itemSpans[id]);
+					model.items[id].location="sack";
+					TrackProgress();
+					updateInfo();
+				}
+				else {
+					div.append("<div class='nope'>Weight limit is 20 kg.</div>")
+				}
 			}
 			else {
+				this.remove();
 				houseDiv.append(itemSpans[id]);
+				model.items[id].location="house";
+				TrackProgress();
+				updateInfo();
 			}
-			
-			
 		});
+		
+		
     }
     
     function Controller(model) {

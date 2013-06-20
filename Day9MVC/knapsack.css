@@ -1,8 +1,9 @@
 img {
 	height: 50;
 	width: 50;
-	margin-left: 30;
-	margin-right: 30;
+	margin-top: 5;
+	margin-left: 28;
+	margin-right: 28;
 }
 
 .location {
@@ -10,14 +11,30 @@ img {
 	width: 330;
 	border: 1px black solid;
 	float: left;
+	padding-left:2px;
+}
+
+.house {
+	background-color: rgb(233, 192, 233);
+}
+
+.sack {
+	background-color: rgb(240, 222, 167);
 }
 
 p {
-	width:110;
+	width:106;
 	text-align:center;
+}
+
+.nope {
+	float:left;
 }
 
 span {
 	float: left;
-	margin-top:20;
+	margin-right:2px;
+	margin-top:15;
+	border: 1px black dotted;
+	border-radius: 35px;
 }
