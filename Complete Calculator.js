@@ -90,6 +90,7 @@ function evaluate(array) {
         var ctx = DOMcanvas.getContext('2d');
         
         if (func === null) {func="x";}
+        if (func === undefined) {func="x";}
         
         console.log("Function: " +func);
         console.log("Min: " + min);
