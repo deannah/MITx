@@ -34,7 +34,7 @@ var knapsack = (function() {
         var items = model.items;
 		$(".item").html("");
 		for (var i = 0; i<items.length; i++) {
-			var itemSpan = $("<span class='item'></span>")
+			var itemSpan = $("<span class='item "+i+"'></span>")
 			var itemhtml = itemHTML[i];
 //			itemSpan.text(items[i].name + " Value: $" + items[i].value + " Weight: " + items[i].weight + " kg");
 			itemSpan.append(itemhtml);
@@ -44,12 +44,23 @@ var knapsack = (function() {
 			console.log($("img").eq(i).html());
 		}
 		
+		
+		
 		div.append(houseDiv, sackDiv);
 		
-		houseDiv.click(function(e) {
-			console.log("You clicked.");
-			console.log("x: " + e.pageX);
-			console.log("y: " + e.pageY);
+//		houseDiv.click(function(e) {
+//			console.log("You clicked.");
+//			console.log("x: " + e.pageX);
+//			console.log("y: " + e.pageY);
+		// });
+		$(".item").click(function() {
+			var n, id;
+			
+			for(var i = 0; i<items.length; i++) {
+				if ($(this).hasClass(i)) {id=i;}
+			}
+			n = items[id].name;
+			console.log("You clicked " + n + "!");
 		});
     }
     
