@@ -29,16 +29,28 @@ var knapsack = (function() {
     }
     
     function View(div, model, controller) {
+		var houseDiv = $("<div class='house location'></div>");
+		var sackDiv = $("<div class='sack location'></div>");
         var items = model.items;
 		$(".item").html("");
 		for (var i = 0; i<items.length; i++) {
 			var itemSpan = $("<span class='item'></span>")
 			var itemhtml = itemHTML[i];
-			itemSpan.text(items[i].name + " Value: $" + items[i].value + " Weight: " + items[i].weight + " kg");
+//			itemSpan.text(items[i].name + " Value: $" + items[i].value + " Weight: " + items[i].weight + " kg");
 			itemSpan.append(itemhtml);
-			div.append(itemSpan);
+			var text= $("<p>Value: $" + items[i].value + " Weight: " + items[i].weight + " kg</p>");
+			itemSpan.append(text);
+			houseDiv.append(itemSpan);
 			console.log($("img").eq(i).html());
 		}
+		
+		div.append(houseDiv, sackDiv);
+		
+		houseDiv.click(function(e) {
+			console.log("You clicked.");
+			console.log("x: " + e.pageX);
+			console.log("y: " + e.pageY);
+		});
     }
     
     function Controller(model) {
