@@ -32,7 +32,8 @@ var knapsack = (function() {
 		var houseDiv = $("<div class='house location'></div>");
 		var sackDiv = $("<div class='sack location'></div>");
         var items = model.items;
-		$(".item").html("");
+		var itemSpans = [];
+		$(".item").remove();
 		for (var i = 0; i<items.length; i++) {
 			var itemSpan = $("<span class='item "+i+"'></span>")
 			var itemhtml = itemHTML[i];
@@ -41,26 +42,31 @@ var knapsack = (function() {
 			var text= $("<p>Value: $" + items[i].value + " Weight: " + items[i].weight + " kg</p>");
 			itemSpan.append(text);
 			houseDiv.append(itemSpan);
-			console.log($("img").eq(i).html());
+			itemSpans[i]=itemSpan;
 		}
 		
-		
-		
 		div.append(houseDiv, sackDiv);
-		
-//		houseDiv.click(function(e) {
-//			console.log("You clicked.");
-//			console.log("x: " + e.pageX);
-//			console.log("y: " + e.pageY);
-		// });
+
 		$(".item").click(function() {
-			var n, id;
+			var id; // items[id] will refer to the clicked item.
 			
 			for(var i = 0; i<items.length; i++) {
 				if ($(this).hasClass(i)) {id=i;}
 			}
 			n = items[id].name;
 			console.log("You clicked " + n + "!");
+			
+			var par = $(this).parent();
+			this.remove();
+			
+			if (par.hasClass("house")) {
+				sackDiv.append(itemSpans[id]);
+			}
+			else {
+				houseDiv.append(itemSpans[id]);
+			}
+			
+			
 		});
     }
     
