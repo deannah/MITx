@@ -4,6 +4,9 @@ img {
 	margin-top: 5;
 	margin-left: 28;
 	margin-right: 28;
+	background-color: white;
+	border: 1px;
+	border-radius: 10;
 }
 
 .location {
@@ -37,4 +40,8 @@ span {
 	margin-top:15;
 	border: 1px black dotted;
 	border-radius: 35px;
+}
+
+span:hover {
+	background-color:gray;
 }
