@@ -127,6 +127,18 @@ var knapsack = (function() {
     		.attr("fill", "blue")
     		.call(d3.behavior.drag().on("drag", move));
 		
+		testSVG.selectAll("text").data(model.items).enter().append("text")
+				.attr("x", 0)
+				.attr("y", function(d, i) {return i*20;})
+				.text(function(d, i) {return model.items[i].name;})
+				.call(d3.behavior.drag().on("drag", moveText));
+		
+		function moveText() {
+			var dragTarget = d3.select(this);
+			dragTarget.attr("x", function() {return d3.event.x;})
+					.attr("y", function() {return d3.event.y;});
+		}
+		
 		function move(){
     		//this.parentNode.appendChild(this);
     		var dragTarget = d3.select(this);
