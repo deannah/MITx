@@ -117,6 +117,25 @@ var knapsack = (function() {
 		var model = Model();
 		var controller = Controller(model);
 		var view = View(div, model, controller)
+		
+		var testSVG = d3.select("body").append("svg").attr("width", 400).attr("height", 400);
+		
+		testSVG.append("svg:circle")
+    		.attr("id", "blueCircle")
+    		.attr("cx", 50)
+    		.attr("cy", 140)
+    		.attr("r", 40)
+    		.attr("fill", "blue")
+    		.call(d3.behavior.drag().on("drag", move));
+		
+		function move(){
+    		//this.parentNode.appendChild(this);
+    		var dragTarget = d3.select(this);
+    		dragTarget
+				.attr("cx", function(){return d3.event.dx + parseInt(dragTarget.attr("cx"))})
+        		.attr("cy", function(){return d3.event.dy + parseInt(dragTarget.attr("cy"))});
+};
+		
     }
     
     exports.setup = setup;
