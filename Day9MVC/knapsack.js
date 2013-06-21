@@ -121,36 +121,7 @@ var knapsack = (function() {
 		
 		var testGroups = testSVG.selectAll(".group").data(model.items).enter().append("g")
 				.attr("class", "group").attr("class", function(d,i) {return i;});
-		
-		testSVG.append("svg:circle")
-    		.attr("id", "blueCircle")
-    		.attr("cx", 50)
-    		.attr("cy", 140)
-    		.attr("r", 40)
-    		.attr("fill", "blue")
-    		.call(d3.behavior.drag().on("drag", move));
-		
-//		testSVG.selectAll("text").data(model.items).enter().append("text")
-//				.attr("x", 0)
-//				.attr("y", function(d, i) {return i*20;})
-//				.text(function(d, i) {return model.items[i].name;})
-//				.call(d3.behavior.drag().on("drag", moveText));
-		
-		//var lolwhat = [];
-		var lolwhat = [0, 1, 2, 3, 4, 5];
-		
-//		var testText = testGroups.selectAll("text").data(lolwhat).enter().append("text")
-////				.attr("x", 0)
-////				.attr("y", function(d, i) {return i*20;})
-//				.attr("class", function(d, i) {return d;})
-//				.text(function(d, i) {return d;})
-//				.call(d3.behavior.drag().on("drag", moveText));
-		
-//		testGroups.append("svg:text").data(lolwhat)
-//				.attr("x", 0)
-//				.attr("y", function(d,i) {return 20*d+20;})
-//				.text(function(d) {return model.items[d].name;})
-//				.call(d3.behavior.drag().on("drag", moveText));
+				//.call(d3.behavior.drag().on("drag", moveGroup)); // this doesn't seem to work, it doesn't notice I'm dragging the group.
 		
 		testGroups.append("svg:text").data(model.items)
 				.attr("x", 0).attr("y", function(d, i) {return i*20+20;})
@@ -161,7 +132,27 @@ var knapsack = (function() {
 			.attr("cy", function(d, i) {return i*20+15;})
 			.attr("r", 10)
 			.attr("fill", "purple")
-			.call(d3.behavior.drag().on("drag", move));
+			//.call(d3.behavior.drag().origin(function(d) {console.log("cx: " + this.x); return {x: this.cx, y: this.cy};}).on("drag", moveGroup))
+			//.call(d3.behavior.drag().on("drag", moveGroup));
+			.call(d3.behavior.drag().on("drag", moveGroup));
+		
+		function moveGroup() {
+			var source = d3.select(this);
+			//console.log("par " + parent);
+			source.attr("cx", function(){return d3.event.dx + parseInt(source.attr("cx"))})
+        		.attr("cy", function(){return d3.event.dy + parseInt(source.attr("cy"))});
+			var parent = d3.select(this.parentNode);
+			var text = d3.select(this.parentNode.childNodes[0]);
+			text.attr("x", function() {return d3.event.x-75;})
+					.attr("y", function() {return d3.event.y+5;});
+//			var dragTarget = d3.select(this.parentNode);
+//			dragTarget.attr("transform", "translate(" + d3.event.dx + "," + d3.event.dy + ")"); 
+			//dragTarget.attr("transform", "translate(" + d3.event.dx + originx + "," + d3.event.dy + parseInt(source.attr("cy")) + ")")
+			//dragTarget.attr("transform", "translate(" + d3.event.dx + source.x + "," + d3.event.dy + source.y + ")")
+//			dragTarget.attr("x", function() {return d3.event.x;})
+//					.attr("y", function() {return d3.event.y;})
+			//dragTarget.attr("transform", "translate(" + dragTarget.attr('x') + "," + dragTarget.attr('y') + ")")
+		}
 		
 		function moveText() {
 			var dragTarget = d3.select(this);
