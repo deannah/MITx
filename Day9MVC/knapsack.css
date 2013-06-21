@@ -49,3 +49,15 @@ span {
 .sack span:hover {
 	background-color: rgb(241, 230, 206);
 }
+
+svg {
+	position: absolute;
+	top: 70px;
+	left: 700px;
+}
+
+.nope {
+	font-size: 30px;
+	font: bold;
+	border: 1px solid black;
+}

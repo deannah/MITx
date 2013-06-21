@@ -105,18 +105,7 @@ var knapsack = (function() {
         
     }
     
-    function setup(div) {
-		
-		for(var i = 0; i < itemHTML.length; i++) {
-			var itemSpan = $("<span class='item'></span>");
-			itemSpan.append(itemHTML[i]);
-			div.append(itemSpan);
-		}
-		
-		var model = Model();
-		var controller = Controller(model);
-		var view = View(div, model, controller)
-		
+	function setupD3(div, model) {
 		var testSVG = d3.select("body").append("svg").attr("width", 400).attr("height", 400);
 		
 		var testGroups = testSVG.selectAll(".group").data(model.items).enter().append("g")
@@ -166,7 +155,22 @@ var knapsack = (function() {
     		dragTarget
 				.attr("cx", function(){return d3.event.dx + parseInt(dragTarget.attr("cx"))})
         		.attr("cy", function(){return d3.event.dy + parseInt(dragTarget.attr("cy"))});
-};
+		}
+	}
+	
+    function setup(div) {
+		
+		for(var i = 0; i < itemHTML.length; i++) {
+			var itemSpan = $("<span class='item'></span>");
+			itemSpan.append(itemHTML[i]);
+			div.append(itemSpan);
+		}
+		
+		var model = Model();
+		var controller = Controller(model);
+		var view = View(div, model, controller)
+		
+		setupD3(div, model);
 		
     }
     
