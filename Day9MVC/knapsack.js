@@ -24,28 +24,18 @@ var knapsack = (function() {
 			items[index] = array;
 		});
 		
-		// I can't get trackprogress to work when calling it in view from the model.
-//		var totValue = 0, totWeight = 0;
-//		
-//		function TrackProgress() {
-//			totValue = 0;
-//			totWeight = 0;
-//			for (var i = 0; i<items.length; i++) {
-//				if(items[i].location == "sack") {
-//					totValue += items[i].value;
-//					totWeight += items[i].weight;
-//				}
-//			}
-//			console.log("updated value: " + totValue);
-//			console.log("updated weight: " + totWeight);
-//		}
-		
-		// need to keep track of weight and value in knapsack.
-		
-		return{items: items};
-		
-		//return {items: items, TrackProgress: TrackProgress, totValue : totValue, totWeight : totWeight};
-		
+		function trackProgress() {
+			var totValue = 0;
+			var totWeight = 0;
+			for (var i = 0; i<items.length; i++) {
+				if(items[i].location == "sack") {
+					totValue += items[i].value;
+					totWeight += items[i].weight;
+				}
+			}
+			return{totValue: totValue, totWeight: totWeight} // model.trackProgress(). to access these
+		}
+		return{items: items, trackProgress: trackProgress};	// model. to access these.
     }
     
     function View(div, model, controller) {
@@ -57,7 +47,6 @@ var knapsack = (function() {
 		for (var i = 0; i<items.length; i++) {
 			var itemSpan = $("<span class='item "+i+"'></span>")
 			var itemhtml = itemHTML[i];
-//			itemSpan.text(items[i].name + " Value: $" + items[i].value + " Weight: " + items[i].weight + " kg");
 			itemSpan.append(itemhtml);
 			var text= $("<p>Value: $" + items[i].value + " Weight: " + items[i].weight + " kg</p>");
 			itemSpan.append(text);
@@ -70,23 +59,10 @@ var knapsack = (function() {
 		var info = $("<div class='info'></div>");
 		div.append(info);
 		
-		var totValue = 0, totWeight = 0;
-		
-		function TrackProgress() {
-			totValue = 0;
-			totWeight = 0;
-			for (var i = 0; i<items.length; i++) {
-				if(items[i].location == "sack") {
-					totValue += items[i].value;
-					totWeight += items[i].weight;
-				}
-			}
-		}
-		
+		model.trackProgress();
 		function updateInfo() {
-			info.text("Total value: $" + totValue + "  Total weight: " + totWeight + " kg");
+			info.text("Total value: $" + model.trackProgress().totValue + "  Total weight: " + model.trackProgress().totWeight + " kg");
 		}
-		
 		updateInfo();
 		
 		$(".item").click(function() {
@@ -102,11 +78,11 @@ var knapsack = (function() {
 			$(".nope").remove(); //in case there had been a warning.
 			
 			if (par.hasClass("house")) {
-				if(totWeight+items[id].weight <= 20) {
+				if(model.trackProgress().totWeight+items[id].weight <= 20) {
 					this.remove();
 					sackDiv.append(itemSpans[id]);
 					model.items[id].location="sack";
-					TrackProgress();
+					model.trackProgress();
 					updateInfo();
 				}
 				else {
@@ -117,7 +93,7 @@ var knapsack = (function() {
 				this.remove();
 				houseDiv.append(itemSpans[id]);
 				model.items[id].location="house";
-				TrackProgress();
+				model.trackProgress();
 				updateInfo();
 			}
 		});
