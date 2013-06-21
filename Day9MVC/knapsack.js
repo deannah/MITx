@@ -111,7 +111,6 @@ var knapsack = (function() {
 			var itemSpan = $("<span class='item'></span>");
 			itemSpan.append(itemHTML[i]);
 			div.append(itemSpan);
-			console.log(itemHTML[i]);
 		}
 		
 		var model = Model();

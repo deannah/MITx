@@ -18,11 +18,11 @@ img {
 }
 
 .house {
-	background-color: rgb(233, 192, 233);
+	background-color: rgb(248, 221, 248);
 }
 
 .sack {
-	background-color: rgb(240, 222, 167);
+	background-color: rgb(238, 216, 184);
 }
 
 p {
@@ -42,6 +42,10 @@ span {
 	border-radius: 35px;
 }
 
-span:hover {
-	background-color:gray;
+.house span:hover {
+	background-color: rgb(233, 226, 226);
+}
+
+.sack span:hover {
+	background-color: rgb(241, 230, 206);
 }
