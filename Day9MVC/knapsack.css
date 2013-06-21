@@ -54,6 +54,8 @@ svg {
 	position: absolute;
 	top: 70px;
 	left: 700px;
+	border: 1px dotted black;
+	background-color: rgb(218, 249, 255);
 }
 
 .nope {

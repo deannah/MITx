@@ -113,16 +113,18 @@ var knapsack = (function() {
 				//.call(d3.behavior.drag().on("drag", moveGroup)); // this doesn't seem to work, it doesn't notice I'm dragging the group.
 		
 		testGroups.append("svg:text").data(model.items)
-				.attr("x", 0).attr("y", function(d, i) {return i*20+20;})
-				.text(function(d, i) {return model.items[i].name;})
+				.attr("x", 0).attr("y", function(d, i) {return i*40+20;})
+				.text(function(d, i) {return "Value: $" + model.items[i].value;})
+		
+		testGroups.append("svg:text").data(model.items)
+				.attr("x", 0).attr("y", function(d, i) {return (i+1)*40;})
+				.text(function(d, i) {return "Weight: " + model.items[i].weight + "kg";})
 		
 		testGroups.append("svg:circle").data(model.items)
-			.attr("cx", 75)
-			.attr("cy", function(d, i) {return i*20+15;})
+			.attr("cx", 95)
+			.attr("cy", function(d, i) {return i*40+20;})
 			.attr("r", 10)
 			.attr("fill", "purple")
-			//.call(d3.behavior.drag().origin(function(d) {console.log("cx: " + this.x); return {x: this.cx, y: this.cy};}).on("drag", moveGroup))
-			//.call(d3.behavior.drag().on("drag", moveGroup));
 			.call(d3.behavior.drag().on("drag", moveGroup));
 		
 		function moveGroup() {
@@ -131,30 +133,12 @@ var knapsack = (function() {
 			source.attr("cx", function(){return d3.event.dx + parseInt(source.attr("cx"))})
         		.attr("cy", function(){return d3.event.dy + parseInt(source.attr("cy"))});
 			var parent = d3.select(this.parentNode);
-			var text = d3.select(this.parentNode.childNodes[0]);
-			text.attr("x", function() {return d3.event.x-75;})
-					.attr("y", function() {return d3.event.y+5;});
-//			var dragTarget = d3.select(this.parentNode);
-//			dragTarget.attr("transform", "translate(" + d3.event.dx + "," + d3.event.dy + ")"); 
-			//dragTarget.attr("transform", "translate(" + d3.event.dx + originx + "," + d3.event.dy + parseInt(source.attr("cy")) + ")")
-			//dragTarget.attr("transform", "translate(" + d3.event.dx + source.x + "," + d3.event.dy + source.y + ")")
-//			dragTarget.attr("x", function() {return d3.event.x;})
-//					.attr("y", function() {return d3.event.y;})
-			//dragTarget.attr("transform", "translate(" + dragTarget.attr('x') + "," + dragTarget.attr('y') + ")")
-		}
-		
-		function moveText() {
-			var dragTarget = d3.select(this);
-			dragTarget.attr("x", function() {return d3.event.x;})
+			var valText = d3.select(this.parentNode.childNodes[0]);
+			valText.attr("x", function() {return d3.event.x-95;})
 					.attr("y", function() {return d3.event.y;});
-		}
-		
-		function move(){
-    		//this.parentNode.appendChild(this);
-    		var dragTarget = d3.select(this);
-    		dragTarget
-				.attr("cx", function(){return d3.event.dx + parseInt(dragTarget.attr("cx"))})
-        		.attr("cy", function(){return d3.event.dy + parseInt(dragTarget.attr("cy"))});
+			var weiText = d3.select(this.parentNode.childNodes[1]);
+			weiText.attr("x", function() {return d3.event.x-95;})
+					.attr("y", function() {return d3.event.y+20;});
 		}
 	}
 	
