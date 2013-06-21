@@ -19,6 +19,7 @@ var knapsack = (function() {
 			array.weight = $(domEle).data("weight");
 			array.value = $(domEle).data("value");
 			array.name = $(domEle).data("name");
+			array.src = $(domEle).attr("src");
 			array.html = $(domEle).html();
 			array.location = "house";
 			items[index] = array;
@@ -112,6 +113,11 @@ var knapsack = (function() {
 				.attr("class", "group").attr("class", function(d,i) {return i;});
 				//.call(d3.behavior.drag().on("drag", moveGroup)); // this doesn't seem to work, it doesn't notice I'm dragging the group.
 		
+		testGroups.append("svg:image").data(model.items)
+				.attr("height", "40px").attr("width", "40px")
+				.attr("x", 110).attr("y", function(d, i) {return i*40})
+				.attr("xlink:href", function(d,i) {return model.items[i].src;})
+		
 		testGroups.append("svg:text").data(model.items)
 				.attr("x", 0).attr("y", function(d, i) {return i*40+20;})
 				.text(function(d, i) {return "Value: $" + model.items[i].value;})
@@ -133,10 +139,13 @@ var knapsack = (function() {
 			source.attr("cx", function(){return d3.event.dx + parseInt(source.attr("cx"))})
         		.attr("cy", function(){return d3.event.dy + parseInt(source.attr("cy"))});
 			var parent = d3.select(this.parentNode);
-			var valText = d3.select(this.parentNode.childNodes[0]);
+			var pic = d3.select(this.parentNode.childNodes[0]);
+			pic.attr("x", function() {return d3.event.x+15;})
+					.attr("y", function() {return d3.event.y-20;})
+			var valText = d3.select(this.parentNode.childNodes[1]);
 			valText.attr("x", function() {return d3.event.x-95;})
 					.attr("y", function() {return d3.event.y;});
-			var weiText = d3.select(this.parentNode.childNodes[1]);
+			var weiText = d3.select(this.parentNode.childNodes[2]);
 			weiText.attr("x", function() {return d3.event.x-95;})
 					.attr("y", function() {return d3.event.y+20;});
 		}
