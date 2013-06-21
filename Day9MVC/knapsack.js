@@ -119,6 +119,9 @@ var knapsack = (function() {
 		
 		var testSVG = d3.select("body").append("svg").attr("width", 400).attr("height", 400);
 		
+		var testGroups = testSVG.selectAll(".group").data(model.items).enter().append("g")
+				.attr("class", "group").attr("class", function(d,i) {return i;});
+		
 		testSVG.append("svg:circle")
     		.attr("id", "blueCircle")
     		.attr("cx", 50)
@@ -127,11 +130,38 @@ var knapsack = (function() {
     		.attr("fill", "blue")
     		.call(d3.behavior.drag().on("drag", move));
 		
-		testSVG.selectAll("text").data(model.items).enter().append("text")
-				.attr("x", 0)
-				.attr("y", function(d, i) {return i*20;})
+//		testSVG.selectAll("text").data(model.items).enter().append("text")
+//				.attr("x", 0)
+//				.attr("y", function(d, i) {return i*20;})
+//				.text(function(d, i) {return model.items[i].name;})
+//				.call(d3.behavior.drag().on("drag", moveText));
+		
+		//var lolwhat = [];
+		var lolwhat = [0, 1, 2, 3, 4, 5];
+		
+//		var testText = testGroups.selectAll("text").data(lolwhat).enter().append("text")
+////				.attr("x", 0)
+////				.attr("y", function(d, i) {return i*20;})
+//				.attr("class", function(d, i) {return d;})
+//				.text(function(d, i) {return d;})
+//				.call(d3.behavior.drag().on("drag", moveText));
+		
+//		testGroups.append("svg:text").data(lolwhat)
+//				.attr("x", 0)
+//				.attr("y", function(d,i) {return 20*d+20;})
+//				.text(function(d) {return model.items[d].name;})
+//				.call(d3.behavior.drag().on("drag", moveText));
+		
+		testGroups.append("svg:text").data(model.items)
+				.attr("x", 0).attr("y", function(d, i) {return i*20+20;})
 				.text(function(d, i) {return model.items[i].name;})
-				.call(d3.behavior.drag().on("drag", moveText));
+		
+		testGroups.append("svg:circle").data(model.items)
+			.attr("cx", 75)
+			.attr("cy", function(d, i) {return i*20+15;})
+			.attr("r", 10)
+			.attr("fill", "purple")
+			.call(d3.behavior.drag().on("drag", move));
 		
 		function moveText() {
 			var dragTarget = d3.select(this);
